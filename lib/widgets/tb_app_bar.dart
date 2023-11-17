@@ -64,11 +64,15 @@ class _TbAppBarState extends TbContextState<TbAppBar> {
 
   AppBar buildDefaultBar() {
     return AppBar(
+      iconTheme: IconThemeData(
+        color: Colors.white, //change your color here
+      ),
       leading: widget.leading,
       title: widget.title,
       actions: widget.actions,
       elevation: widget.elevation ?? 8,
-      shadowColor: widget.shadowColor ?? Color(0xFFFFFFFF).withAlpha(150),
+      backgroundColor: Color(0xFF000000),
+      shadowColor: widget.shadowColor ?? Color(0xFF000000).withAlpha(150),
     );
   }
 }
@@ -145,7 +149,7 @@ class _TbAppSearchBarState extends TbContextState<TbAppSearchBar> {
     return AppBar(
         centerTitle: true,
         elevation: widget.elevation ?? 8,
-        shadowColor: widget.shadowColor ?? Color(0xFFFFFFFF).withAlpha(150),
+        shadowColor: widget.shadowColor ?? Color(0xFF000000).withAlpha(150),
         title: TextField(
             controller: _filter,
             autofocus: true,

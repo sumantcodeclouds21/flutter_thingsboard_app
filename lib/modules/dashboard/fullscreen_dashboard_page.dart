@@ -41,45 +41,45 @@ class _FullscreenDashboardPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
-          child: ValueListenableBuilder<bool>(
-              valueListenable: showBackValue,
-              builder: (context, canGoBack, widget) {
-                return TbAppBar(tbContext,
-                    leading: canGoBack
-                        ? BackButton(onPressed: () {
-                            maybePop();
-                          })
-                        : null,
-                    showLoadingIndicator: false,
-                    elevation: 1,
-                    shadowColor: Colors.transparent,
-                    title: ValueListenableBuilder<String>(
-                      valueListenable: dashboardTitleValue,
-                      builder: (context, title, widget) {
-                        return FittedBox(
-                            fit: BoxFit.fitWidth,
-                            alignment: Alignment.centerLeft,
-                            child: Text(title));
-                      },
-                    ),
-                    actions: [
-                      IconButton(
-                          icon: Icon(Icons.settings),
-                          onPressed: () =>
-                              navigateTo('/profile?fullscreen=true'))
-                    ]);
-              }),
-        ),
-        body: Dashboard(tbContext, titleCallback: (title) {
-          dashboardTitleValue.value = title;
-        }, controllerCallback: (controller) {
-          controller.canGoBack.addListener(() {
-            _onCanGoBack(controller.canGoBack.value);
-          });
-          controller.openDashboard(widget.fullscreenDashboardId,
-              fullscreen: true);
-        }));
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: ValueListenableBuilder<bool>(
+            valueListenable: showBackValue,
+            builder: (context, canGoBack, widget) {
+              return TbAppBar(tbContext,
+                  leading: canGoBack
+                      ? BackButton(onPressed: () {
+                          maybePop();
+                        })
+                      : null,
+                  showLoadingIndicator: false,
+                  elevation: 1,
+                  shadowColor: Colors.transparent,
+                  title: ValueListenableBuilder<String>(
+                    valueListenable: dashboardTitleValue,
+                    builder: (context, title, widget) {
+                      return FittedBox(
+                          fit: BoxFit.fitWidth,
+                          alignment: Alignment.centerLeft,
+                          child: Text(title));
+                    },
+                  ),
+                  actions: [
+                    IconButton(
+                        icon: Icon(Icons.settings),
+                        onPressed: () => navigateTo('/profile?fullscreen=true'))
+                  ]);
+            }),
+      ),
+      body: Dashboard(tbContext, titleCallback: (title) {
+        dashboardTitleValue.value = title;
+      }, controllerCallback: (controller) {
+        controller.canGoBack.addListener(() {
+          _onCanGoBack(controller.canGoBack.value);
+        });
+        controller.openDashboard(widget.fullscreenDashboardId,
+            fullscreen: true);
+      }),
+    );
   }
 }

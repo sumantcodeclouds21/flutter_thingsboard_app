@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:thingsboard_app/core/context/tb_context.dart';
 import 'package:thingsboard_app/core/context/tb_context_widget.dart';
+import 'package:thingsboard_app/utils/services/local_notification_service.dart';
 import 'package:thingsboard_app/widgets/tb_app_bar.dart';
 
 class DashboardPage extends TbPageWidget {
@@ -36,6 +38,15 @@ class _DashboardPageState extends TbPageState<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        print("FirebaseMessaging.onMessage.listen dashboard");
+        if (message.notification != null) {
+          LocalNotificationService.createanddisplaynotification(message);
+        }
+      },
+    );
+
     return Scaffold(
         appBar: TbAppBar(
           tbContext,
@@ -57,6 +68,7 @@ class _DashboardPageState extends TbPageState<DashboardPage> {
         //dashboardTitleValue.value =  title;
         //}
         //),
+
         );
   }
 }

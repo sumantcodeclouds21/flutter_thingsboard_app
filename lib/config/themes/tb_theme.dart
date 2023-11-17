@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:thingsboard_app/utils/transition/page_transitions.dart';
 
 const int _tbPrimaryColorValue = 0xFF305680;
-const Color _tbPrimaryColor = Color(_tbPrimaryColorValue);
+const Color _tbPrimaryColor = Color.fromARGB(255, 244, 245, 246);
 const Color _tbSecondaryColor = Color(0xFF527dad);
 const Color _tbDarkPrimaryColor = Color(0xFF9fa8da);
 
 const int _tbTextColorValue = 0xFF282828;
-const Color _tbTextColor = Color(_tbTextColorValue);
+const Color _tbTextColor = Color.fromARGB(255, 255, 250, 250);
 
 var tbTypography = Typography.material2018();
 
@@ -63,7 +63,7 @@ ThemeData tbTheme = ThemeData(
       ), */
         iconTheme: IconThemeData(color: _tbTextColor)),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         selectedItemColor: _tbPrimaryColor,
         unselectedItemColor: _tbPrimaryColor.withAlpha((255 * 0.38).ceil()),
         showSelectedLabels: true,

@@ -270,6 +270,16 @@ class S {
     );
   }
 
+  /// `Cancel password reset`
+  String get passwordResetCancel {
+    return Intl.message(
+      'Cancel',
+      name: 'passwordResetCancel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password reset link was successfully sent!`
   String get passwordResetLinkSuccessfullySentNotification {
     return Intl.message(

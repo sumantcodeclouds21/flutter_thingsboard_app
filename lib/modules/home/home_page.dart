@@ -42,13 +42,20 @@ class _HomePageState extends TbContextState<HomePage>
     return Scaffold(
       appBar: TbAppBar(
         tbContext,
-        elevation: dashboardState ? 0 : 8,
+        elevation: dashboardState ? 0 : 2,
+        shadowColor: Colors.black,
         title: Center(
             child: Container(
-                height: 24,
-                child: SvgPicture.asset(ThingsboardImage.thingsBoardWithTitle,
-                    color: Theme.of(context).primaryColor,
-                    semanticsLabel: 'ThingsBoard Logo'))),
+                height: 44,
+                alignment: Alignment.center,
+                child: SvgPicture.asset(
+                  ThingsboardImage.traxmateLogo,
+                  //     Image.asset(
+                  //   ThingsboardImage.traxmateLogo,
+                  fit: BoxFit.contain,
+                  color: Colors.white,
+                  // width: 300,
+                ))),
         actions: [
           if (tbClient.isSystemAdmin())
             IconButton(

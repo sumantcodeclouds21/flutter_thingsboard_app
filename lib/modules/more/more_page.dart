@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:thingsboard_app/core/context/tb_context.dart';
 import 'package:thingsboard_app/core/context/tb_context_widget.dart';
 import 'package:thingsboard_app/generated/l10n.dart';
+import 'package:thingsboard_app/utils/services/http_service.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
 class MorePage extends TbContextWidget {
@@ -75,6 +76,17 @@ class _MorePageState extends TbContextState<MorePage> {
                                     height: 20 / 14))
                           ]))),
                   onTap: () {
+                    var jwtToken = tbClient.getJwtToken();
+                    var payload = {
+                      'url': 'app/push-token/' + jwtToken!,
+                      "data": {
+                        'pushToken': 'globals.pushToken',
+                      },
+                    };
+                    deleteHttpCall(payload).then((response) async {
+                      print(response);
+                      return false;
+                    });
                     tbClient.logout(
                         requestConfig: RequestConfig(ignoreErrors: true));
                   })

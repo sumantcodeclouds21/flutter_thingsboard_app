@@ -50,27 +50,27 @@ class TbLogger {
       output: TbLogOutput());
 
   void verbose(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _logger.v(message, error, stackTrace);
+    _logger.v(message, error: error, stackTrace: stackTrace);
   }
 
   void debug(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _logger.d(message, error, stackTrace);
+    _logger.d(message, error: error, stackTrace: stackTrace);
   }
 
   void info(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _logger.i(message, error, stackTrace);
+    _logger.i(message, error: error, stackTrace: stackTrace);
   }
 
   void warn(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _logger.w(message, error, stackTrace);
+    _logger.w(message, error: error, stackTrace: stackTrace);
   }
 
   void error(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _logger.e(message, error, stackTrace);
+    _logger.e(message, error: error, stackTrace: stackTrace);
   }
 
   void fatal(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    _logger.wtf(message, error, stackTrace);
+    _logger.wtf(message, error: error, stackTrace: stackTrace);
   }
 }
 
@@ -171,7 +171,7 @@ class TbContext {
       }
       await tbClient.init();
     } catch (e, s) {
-      log.error('Failed to init tbContext: $e', e, s);
+      //log.error('Failed to init tbContext: $e', e, s);
     }
   }
 
@@ -180,7 +180,7 @@ class TbContext {
   }
 
   void onError(ThingsboardError tbError) {
-    log.error('onError', tbError, tbError.getStackTrace());
+    // log.error('onError', tbError, tbError.getStackTrace());
     showErrorNotification(tbError.message!);
   }
 
@@ -204,7 +204,7 @@ class TbContext {
       {Duration? duration}) {
     duration ??= const Duration(days: 1);
     Color backgroundColor;
-    var textColor = Color(0xFFFFFFFF);
+    var textColor = Color(0xFF000000);
     switch (type) {
       case NotificationType.info:
         backgroundColor = Color(0xFF323232);
@@ -244,21 +244,21 @@ class TbContext {
   }
 
   void onLoadStarted() {
-    log.debug('On load started.');
+    // log.debug('On load started.');
     _isLoadingNotifier.value = true;
   }
 
   void onLoadFinished() {
-    log.debug('On load finished.');
+    // log.debug('On load finished.');
     _isLoadingNotifier.value = false;
   }
 
   Future<void> onUserLoaded() async {
     try {
-      log.debug('onUserLoaded: isAuthenticated=${tbClient.isAuthenticated()}');
+      // log.debug('onUserLoaded: isAuthenticated=${tbClient.isAuthenticated()}');
       isUserLoaded = true;
       if (tbClient.isAuthenticated() && !tbClient.isPreVerificationToken()) {
-        log.debug('authUser: ${tbClient.getAuthUser()}');
+        // log.debug('authUser: ${tbClient.getAuthUser()}');
         if (tbClient.getAuthUser()!.userId != null) {
           try {
             userDetails = await tbClient.getUserService().getUser();
@@ -274,7 +274,7 @@ class TbContext {
         }
       } else {
         if (tbClient.isPreVerificationToken()) {
-          log.debug('authUser: ${tbClient.getAuthUser()}');
+          // log.debug('authUser: ${tbClient.getAuthUser()}');
           twoFactorAuthProviders = await tbClient
               .getTwoFactorAuthService()
               .getAvailableLoginTwoFaProviders();
@@ -290,7 +290,7 @@ class TbContext {
           tbClient.isAuthenticated() && !tbClient.isPreVerificationToken();
       await updateRouteState();
     } catch (e, s) {
-      log.error('Error: $e', e, s);
+      // log.error('Error: $e', e, s);
       if (_isConnectionError(e)) {
         var res = await confirm(
             title: 'Connection error',

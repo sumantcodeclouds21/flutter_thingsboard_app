@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "887675289060",
+    "project_id": "thingsboard-66682",
+    "storage_bucket": "thingsboard-66682.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887675289060:android:2f30b3bb3b8f598218dbf1",
+        "android_client_info": {
+          "package_name": "org.thingsboard.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887675289060-3dmp3alk2s2lccapqe6f4tquu3f0005g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDuwQvJ_E4zBeMWyWtPEoLhFmsOcfXlyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887675289060-3dmp3alk2s2lccapqe6f4tquu3f0005g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "887675289060-cghb3b19q7q1mk06d6j1ni009r5o3deb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.thingsboard.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

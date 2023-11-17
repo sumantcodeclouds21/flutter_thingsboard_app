@@ -1,8 +1,10 @@
 import 'dart:ui';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -10,9 +12,10 @@ import 'package:thingsboard_app/constants/assets_path.dart';
 import 'package:thingsboard_app/core/context/tb_context.dart';
 import 'package:thingsboard_app/core/context/tb_context_widget.dart';
 import 'package:thingsboard_app/generated/l10n.dart';
+import 'package:thingsboard_app/utils/services/http_service.dart';
 import 'package:thingsboard_app/widgets/tb_progress_indicator.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
-
+import 'package:thingsboard_app/utils/services/global.dart' as globals;
 import 'login_page_background.dart';
 
 class LoginPage extends TbPageWidget {
@@ -54,7 +57,7 @@ class _LoginPageState extends TbPageState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         resizeToAvoidBottomInset: false,
         body: Stack(children: [
           LoginPageBackground(),
@@ -69,22 +72,49 @@ class _LoginPageState extends TbPageState<LoginPage> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Row(children: [
-                                SvgPicture.asset(
-                                    ThingsboardImage.thingsBoardWithTitle,
-                                    height: 25,
-                                    color: Theme.of(context).primaryColor,
-                                    semanticsLabel:
-                                        '${S.of(context).logoDefaultValue}')
-                              ]),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Center(
+                                      child: SvgPicture.asset(
+                                          ThingsboardImage.traxmateLogo,
+                                          height: 90,
+                                          color: Colors.white,
+                                          semanticsLabel:
+                                              '${S.of(context).logoDefaultValue}'),
+                                    )
+
+                                    // Center(
+                                    //     child: Container(
+                                    //   width: 360,
+                                    //   // height: double.infinity,
+                                    //   alignment: Alignment.center, // This is needed
+                                    //   child: Image.asset(
+                                    //     ThingsboardImage.traxmateLogo,
+                                    //     fit: BoxFit.contain,
+                                    //     // width: 200,
+                                    //   ),
+                                    // )),
+
+                                    // Image.asset(
+                                    //   ThingsboardImage.traxmateLogo,
+                                    //   fit: BoxFit.contain,
+                                    //   width: 300,
+                                    // ),
+                                  ]),
                               SizedBox(height: 32),
-                              Row(children: [
-                                Text('${S.of(context).loginNotification}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 28,
-                                        height: 36 / 28))
-                              ]),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text('${S.of(context).loginNotification}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 23,
+                                            color: Colors.white,
+                                            height: 36 / 28))
+                                  ]),
                               SizedBox(height: 48),
                               if (tbContext.hasOAuthClients)
                                 _buildOAuth2Buttons(
@@ -124,7 +154,22 @@ class _LoginPageState extends TbPageState<LoginPage> {
                                               errorText:
                                                   '${S.of(context).emailInvalidText}')
                                         ]),
+                                        style: TextStyle(color: Colors.white),
                                         decoration: InputDecoration(
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                  color: Colors.white,
+                                                  width: 2.0),
+                                            ),
+                                            enabledBorder:
+                                                const OutlineInputBorder(
+                                              // width: 0.0 produces a thin "hairline" border
+                                              borderSide: const BorderSide(
+                                                  color: Colors.white,
+                                                  width: 0.0),
+                                            ),
+                                            labelStyle: new TextStyle(
+                                                color: Colors.white),
                                             border: OutlineInputBorder(),
                                             labelText:
                                                 '${S.of(context).email}'),
@@ -144,7 +189,16 @@ class _LoginPageState extends TbPageState<LoginPage> {
                                                     errorText:
                                                         '${S.of(context).passwordRequireText}')
                                               ]),
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                               decoration: InputDecoration(
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color: Colors.white,
+                                                            width: 2.0),
+                                                  ),
                                                   suffixIcon: IconButton(
                                                     icon: Icon(showPassword
                                                         ? Icons.visibility
@@ -156,6 +210,16 @@ class _LoginPageState extends TbPageState<LoginPage> {
                                                               .value;
                                                     },
                                                   ),
+                                                  enabledBorder:
+                                                      const OutlineInputBorder(
+                                                    // width: 0.0 produces a thin "hairline" border
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color: Colors.white,
+                                                            width: 0.0),
+                                                  ),
+                                                  labelStyle: new TextStyle(
+                                                      color: Colors.white),
                                                   border: OutlineInputBorder(),
                                                   labelText:
                                                       '${S.of(context).password}'),
@@ -173,9 +237,7 @@ class _LoginPageState extends TbPageState<LoginPage> {
                                     child: Text(
                                       '${S.of(context).passwordForgotText}',
                                       style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
+                                          color: Colors.white,
                                           letterSpacing: 1,
                                           fontSize: 12,
                                           height: 16 / 12),
@@ -187,8 +249,8 @@ class _LoginPageState extends TbPageState<LoginPage> {
                               ElevatedButton(
                                 child: Text('${S.of(context).login}'),
                                 style: ElevatedButton.styleFrom(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 16)),
+                                    padding: EdgeInsets.symmetric(vertical: 16),
+                                    backgroundColor: Color(0xffaaaaaa)),
                                 onPressed: () {
                                   _login();
                                 },
@@ -335,7 +397,7 @@ class _LoginPageState extends TbPageState<LoginPage> {
         showErrorNotification(result.error!);
       }
     } catch (e) {
-      log.error('Auth Error:', e);
+      // log.error('Auth Error:', e);
       _isLoginNotifier.value = false;
     }
   }
@@ -349,6 +411,29 @@ class _LoginPageState extends TbPageState<LoginPage> {
       _isLoginNotifier.value = true;
       try {
         await tbClient.login(LoginRequest(username, password));
+        var jwtToken = tbClient.getJwtToken();
+        String udid = await FlutterUdid.udid;
+        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        final deviceInfo1 = await deviceInfo.deviceInfo;
+        final allInfo = deviceInfo1.data;
+        final userInfo = tbClient.getAuthUser();
+        var payload = {
+          'url': 'app/push-token/' + jwtToken!,
+          "data": {
+            'pushToken': globals.pushToken,
+            'customerId': userInfo?.customerId,
+            'deviceId': udid,
+            'model': androidInfo.model,
+            'appVersion': allInfo['version']['release'],
+          },
+        };
+        print(payload);
+        print('store token payload--------------------');
+        postHttpCall(payload).then((response) async {
+          print(response);
+          return false;
+        });
       } catch (e) {
         _isLoginNotifier.value = false;
       }

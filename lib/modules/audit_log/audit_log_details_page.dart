@@ -106,7 +106,7 @@ class _AuditLogDetailsPageState extends TbContextState<AuditLogDetailsPage> {
             top: 0,
             child: Container(
               padding: EdgeInsets.only(left: 4, right: 4),
-              color: Colors.white,
+              color: Colors.red,
               child: Text(
                 title,
                 style: TextStyle(

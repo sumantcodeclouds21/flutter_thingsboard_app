@@ -305,7 +305,7 @@ class WidgetActionHandler with HasTbContext {
       await launchUrlString(url);
       return MobileActionResult.launched(true);
     } else {
-      log.error('Could not launch $url');
+      // log.error('Could not launch $url');
       return MobileActionResult.launched(false);
     }
   }

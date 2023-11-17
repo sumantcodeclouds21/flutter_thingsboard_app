@@ -16,8 +16,9 @@ class _DashboardsPageState extends TbPageState<DashboardsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: TbAppBar(tbContext, title: Text('Dashboards')),
-        body: DashboardsGridWidget(tbContext));
+      appBar: TbAppBar(tbContext, title: Text('Dashboards')),
+      body: DashboardsGridWidget(tbContext),
+    );
   }
 
   @override

@@ -6,7 +6,10 @@ import 'package:thingsboard_app/modules/alarm/alarms_page.dart';
 import 'package:thingsboard_app/modules/device/devices_main_page.dart';
 import 'package:thingsboard_app/modules/home/home_page.dart';
 import 'package:thingsboard_app/modules/more/more_page.dart';
+import 'package:thingsboard_app/utils/services/http_service.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
+
+import 'package:barcode_scan2/barcode_scan2.dart';
 
 class TbMainNavigationItem {
   final Widget page;
@@ -163,25 +166,69 @@ class _MainPageState extends TbPageState<MainPage>
           return true;
         },
         child: Scaffold(
-            body: TabBarView(
-              physics: tbContext.homeDashboard != null
-                  ? NeverScrollableScrollPhysics()
-                  : null,
-              controller: _tabController,
-              children: _tabItems.map((item) => item.page).toList(),
-            ),
-            bottomNavigationBar: ValueListenableBuilder<int>(
-              valueListenable: _currentIndexNotifier,
-              builder: (context, index, child) => BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  currentIndex: index,
-                  onTap: (int index) =>
-                      _setIndex(index) /*_currentIndex = index*/,
-                  items: _tabItems
-                      .map((item) => BottomNavigationBarItem(
-                          icon: item.icon, label: item.title))
-                      .toList()),
-            )));
+          body: TabBarView(
+            physics: tbContext.homeDashboard != null
+                ? NeverScrollableScrollPhysics()
+                : null,
+            controller: _tabController,
+            children: _tabItems.map((item) => item.page).toList(),
+          ),
+          bottomNavigationBar: ValueListenableBuilder<int>(
+            valueListenable: _currentIndexNotifier,
+            builder: (context, index, child) => BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                currentIndex: index,
+                onTap: (int index) =>
+                    _setIndex(index) /*_currentIndex = index*/,
+                items: _tabItems
+                    .map((item) => BottomNavigationBarItem(
+                        icon: item.icon, label: item.title))
+                    .toList()),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          floatingActionButton: Container(
+              margin: const EdgeInsets.only(bottom: 55),
+              height: 40.0,
+              width: 40.0,
+              child: FloatingActionButton(
+                // isExtended: true,
+                child: Icon(
+                  Icons.qr_code_2_sharp,
+                  size: 20,
+                  color: Colors.white,
+                ),
+                backgroundColor: Colors.black,
+                onPressed: () async {
+                  var result = await BarcodeScanner.scan();
+
+                  print(result
+                      .type); // The result type (barcode, cancelled, failed)
+                  print(result.rawContent); // The barcode content
+                  print(result.format); // The barcode format (as enum)
+                  print(result.formatNote);
+                  if (result.type != 'Cancelled') {
+                    print('scanned datat-----------------');
+                    var jwtToken = tbClient.getJwtToken();
+                    var payload = {
+                      'url': 'scan/qr/' + jwtToken!,
+                      "data": {
+                        'RawData': result.rawContent,
+                      },
+                    };
+                    postHttpCall(payload).then((response) async {
+                      print(response);
+                      return false;
+                    });
+                  }
+
+                  // setState(() {
+                  //   print(codeSanner);
+                  //   print('scanned datat-----------------');
+                  //   // qrCodeResult = codeSanner;
+                  // });
+                },
+              )),
+        ));
   }
 
   int _indexFromPath(String path) {
